@@ -1,0 +1,24 @@
+1) Update bu malumotni o'zgartirish misol uchun bizda footbalteam digan table bo'lsa va u yerda name='ronoldo' bolsa uning ismini o'zgartirmoqchimiz buning uchun
+update footbalteam
+set name='Ronaldo'
+where name='ronoldo';
+
+2) Delete queriysi bu rowlani o'chiradi misol uchun bizda footbalteam degan table bor va bu tableda name='Lewandowski' degan row bor biz buni ochirish uchun.
+delete from footbalteam where name='Lewandowski';
+
+undan tashqari qaysi oyinchi ochib ketvotganini ko'rish uchun RETURNING * dan foydalanish mumkin.
+delete from footbalteam where name='Lewandowski' RETURNING *; 
+
+3) group by queriysi bu columni biz etgan rowi bo'yicha guruhlaydi misol uchun bizda footbalteam table bor va bu yerda bazi o'yinchilarni num=10 misol uchun mesini numi=10
+ neymarni num=10 va buni guruhlash uchun
+
+select * from footbalteam Group by num;
+
+va bu yerda birinchi num=10 oyinchi qolib qolgan num=10 oyinchila ko'rinmaydi lekin tableni ichida turgan bo'ladi
+
+4) Order by bu sortal misol uchun num bo'yicha sortlasak num kichiklardan boshlanib chiqadi agar teskari tartibda chiqarmoqchi bo'lsak descdan foydalanamiz
+
+select * from footbalteam order by num desc;
+
+5) joinni to'liq organmadim lekin mysqlda o'tganimizni bilaman join bu bir nechta table bir biriga qo;shishda yordam beradi va joinlarni turi ko'p
+left join,right join,inner join,cross join,full join larni bilaman
