@@ -1,0 +1,2 @@
+db.query ni db.querrow dan farqi queryrow faqat 1 ta columni olib kela oladi query esa siz select qilgan barcha ma'lumotlarni olib keladi va uni ishlatish uchun uni bitta o'zgaruvchiga
+o'zlashitirib keyin for ichiga o'zgaruvchi_nomi.Next() deb murojat qilamiz va for har aylanganda keyingi columni beraveradi.
