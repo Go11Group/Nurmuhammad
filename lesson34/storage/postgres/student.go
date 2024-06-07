@@ -34,7 +34,7 @@ func (b *StudentRepo) DeleteById(id string) error {
 	return err
 }
 
-func (b *StudentRepo) UpdateById(student *model.Student) error {
+func (b *StudentRepo) UpdateById(student *model.Student, id int) error {
 
 	_, err := b.db.Exec(`
 	UPDATE student
@@ -49,7 +49,7 @@ func (b *StudentRepo) UpdateById(student *model.Student) error {
 		student.Email,
 		student.DateOfBirth,
 		student.EnrollmentDate,
-		student.StudentID)
+		id)
 
 	return err
 }

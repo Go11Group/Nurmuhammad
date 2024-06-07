@@ -67,15 +67,12 @@ func (h *Handler) StudentUpdateById(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
 	}
 
-	// student structini ichini to'ldiring
 	var student model.Student
-
-	student.StudentID = id
-	student.FirstName = "Bobur"
-	student.LastName = "Jorayev"
-	student.Email = "any@gmail.com"
-
-	err = h.Student.UpdateById(&student)
+	err = json.NewDecoder(r.Body).Decode(&student)
+	if err != nil {
+		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
+	}
+	err = h.Student.UpdateById(&student, id)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error on update, %s", err)))
 	} else {
