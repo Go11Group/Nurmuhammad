@@ -17,11 +17,9 @@ type Problem struct {
 }
 
 type SolvedProblems struct {
-	FirstName      string
-	LastName       string
-	Email          string
-	ProblemName    string
-	Description    string
-	DateOfBirth    time.Time
-	EnrollmentDate time.Time
+	FirstName   string
+	LastName    string
+	Email       string
+	ProblemName string
+	Description string
 }

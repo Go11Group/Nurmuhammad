@@ -7,15 +7,15 @@ CREATE TABLE users (
 );
 
 CREATE TABLE Problems (
-    Problems_id SERIAL PRIMARY KEY,
-    Problems_name VARCHAR(100) NOT NULL,
+    Problem_id SERIAL PRIMARY KEY,
+    Problem_name VARCHAR(100) NOT NULL,
     description TEXT
 );
 
 Create table Solved_problems(
     id SERIAL PRIMARY KEY,
     User_id int references Users(User_id),
-    Problems_id int references Problems(Problems_id)
+    Problem_id int references Problems(Problem_id)
 );
 
 -- Inserting 5 records into the User table
@@ -27,7 +27,7 @@ INSERT INTO Users (first_name, last_name, email) VALUES
 ('Sarah', 'Davis', 'sarah.davis@example.com');
 
 -- Inserting 20 records into the Problems table
-INSERT INTO Problems (Problems_name, description) VALUES
+INSERT INTO Problems (Problem_name, description) VALUES
 ('Problem 1', 'Description for Problem 1'),
 ('Problem 2', 'Description for Problem 2'),
 ('Problem 3', 'Description for Problem 3'),
@@ -50,10 +50,17 @@ INSERT INTO Problems (Problems_name, description) VALUES
 ('Problem 20', 'Description for Problem 20');
 
 -- Inserting 30 records into the Solved_problems table
-INSERT INTO Solved_problems (User_id, Problems_id) VALUES
+INSERT INTO Solved_problems (User_id, Problem_id) VALUES
 (1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
 (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
 (3, 11), (3, 12), (3, 13), (3, 14), (3, 15),
 (4, 16), (4, 17), (4, 18), (4, 19), (4, 20),
 (5, 1), (5, 2), (5, 3), (5, 4), (5, 5),
 (1, 6), (2, 11), (3, 16), (4, 1), (5, 6);
+
+select u.first_name,u.last_name,u.email,p.Problem_name,p.description 
+from users as u
+join Solved_problems as s
+on s.user_id=u.user_id
+join Problems as p 
+on p.Problem_id=s.Problem_id;

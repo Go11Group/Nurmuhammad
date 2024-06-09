@@ -11,8 +11,10 @@ func main() {
 		panic(err)
 	}
 	stu := postgres.NewUserRepo(db)
+	pr := postgres.NewProblemRepo(db)
+	sol := postgres.NewSolvedRepo(db)
 
-	server := handler.NewHandler(handler.Handler{User: stu})
+	server := handler.NewHandler(handler.Handler{User: stu, Problem: pr, Solved: sol})
 
 	err = server.ListenAndServe()
 	if err != nil {

@@ -10,17 +10,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (h *Handler) user(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) problem(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("URL:", r.URL)
 	fmt.Println("Host:", r.Host)
 	fmt.Println("Method:", r.Method)
 	switch r.Method {
 	case "GET":
-		h.UserGetById(w, r)
+		h.ProblemGetById(w, r)
 	case "DELETE":
-		h.UserDeleteById(w, r)
+		h.ProblemDeleteById(w, r)
 	case "PUT":
-		h.UserUpdateById(w, r)
+		h.ProblemUpdateById(w, r)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		_, err := w.Write([]byte("405 - Method Not Allowed"))
@@ -31,11 +31,11 @@ func (h *Handler) user(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *Handler) UserGetById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ProblemGetById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	book, err := h.User.UserGetById(id)
+	book, err := h.Problem.ProblemsGetById(id)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(fmt.Sprintf("error while Decode, err: %s", err.Error())))
@@ -48,32 +48,33 @@ func (h *Handler) UserGetById(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(fmt.Sprintf("error while Encode, err: %s", err.Error())))
 	}
+
 }
 
-func (h *Handler) UserDeleteById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ProblemDeleteById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	err := h.User.UserDeleteById(id)
+	err := h.Problem.ProblemDeleteById(id)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("error while Delete, err: %s", err.Error())))
 		return
 	}
-	w.Write([]byte("Succes to delete users"))
+	w.Write([]byte("Succes to delete problems"))
 }
 
-func (h *Handler) UserUpdateById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ProblemUpdateById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
 	}
-	var user model.User
-	err = json.NewDecoder(r.Body).Decode(&user)
+	var problem model.Problem
+	err = json.NewDecoder(r.Body).Decode(&problem)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
 	}
-	err = h.User.UserUpdateById(&user, id)
+	err = h.Problem.ProblemUpdateById(&problem, id)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error on update, %s", err)))
 	} else {
