@@ -8,13 +8,13 @@ import (
 )
 
 type Handler struct {
-	Student *postgres.StudentRepo
+	User *postgres.UserRepo
 }
 
 func NewHandler(handler Handler) *http.Server {
 	m := mux.NewRouter()
 
-	m.HandleFunc("/student/{id}", handler.student)
+	m.HandleFunc("/user/{id}", handler.user)
 	return &http.Server{Handler: m}
 }
 

@@ -2,26 +2,25 @@ package model
 
 import "time"
 
-type Student struct {
-	StudentID      int
+type User struct {
+	UserID         int
 	FirstName      string
 	LastName       string
 	Email          string
-	DateOfBirth    time.Time
 	EnrollmentDate time.Time
 }
 
-type Lesson struct {
-	LessonID    int
-	LessonName  string
+type Problem struct {
+	ProblemID   int
+	ProblemName string
 	Description string
 }
 
-type StudentLesson struct {
+type SolvedProblems struct {
 	FirstName      string
 	LastName       string
 	Email          string
-	LessonName     string
+	ProblemName    string
 	Description    string
 	DateOfBirth    time.Time
 	EnrollmentDate time.Time

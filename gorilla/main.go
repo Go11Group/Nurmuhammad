@@ -10,9 +10,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	stu := postgres.NewStudentRepo(db)
+	stu := postgres.NewUserRepo(db)
 
-	server := handler.NewHandler(handler.Handler{Student: stu})
+	server := handler.NewHandler(handler.Handler{User: stu})
 
 	err = server.ListenAndServe()
 	if err != nil {

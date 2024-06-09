@@ -10,18 +10,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (h *Handler) student(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) user(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("URL:", r.URL)
 	fmt.Println("Host:", r.Host)
 	fmt.Println("Method:", r.Method)
 	switch r.Method {
 	case "GET":
-		h.StudentGetById(w, r)
+		h.UserGetById(w, r)
 	case "DELETE":
 		fmt.Println("Handling DELETE request")
-		h.StudentDeleteById(w, r)
+		h.UserDeleteById(w, r)
 	case "PUT":
-		h.StudentUpdateById(w, r)
+		h.UserUpdateById(w, r)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		_, err := w.Write([]byte("405 - Method Not Allowed"))
@@ -32,11 +32,11 @@ func (h *Handler) student(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (h *Handler) StudentGetById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) UserGetById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	book, err := h.Student.GetById(id)
+	book, err := h.User.GetById(id)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte(fmt.Sprintf("error while Decode, err: %s", err.Error())))
@@ -51,30 +51,30 @@ func (h *Handler) StudentGetById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) StudentDeleteById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) UserDeleteById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	err := h.Student.DeleteById(id)
+	err := h.User.DeleteById(id)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("error while Delete, err: %s", err.Error())))
 		return
 	}
-	w.Write([]byte("Succes to delete student"))
+	w.Write([]byte("Succes to delete users"))
 }
 
-func (h *Handler) StudentUpdateById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) UserUpdateById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
 	}
-	var student model.Student
-	err = json.NewDecoder(r.Body).Decode(&student)
+	var user model.User
+	err = json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error in id, %s", err)))
 	}
-	err = h.Student.UpdateById(&student, id)
+	err = h.User.UpdateById(&user, id)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Error on update, %s", err)))
 	} else {
