@@ -3,12 +3,14 @@ package main
 import (
 	"exam/dbcon"
 	"exam/gin"
+	"fmt"
 )
 
 func main() {
 	db, err := dbcon.ConnnectDb()
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	defer db.Close()
 	user := dbcon.ConnectUser(db)

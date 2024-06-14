@@ -5,12 +5,32 @@ import (
 )
 
 type User struct {
-	UserID    string    `json:"user_id"`
+	UserID    string    `json:"userId"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
-	Birthday  time.Time `json:"birthday"`
+	Birthday  string    `json:"birthday"`
 	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `json:"deleted_at,omitempty"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	DeletedAt string    `json:"deletedAt,omitempty"`
+}
+
+type UserGetAllResp struct {
+	Users []User
+	Count int
+}
+
+type UserCourses struct {
+	UserId  string    `json:"user_id"`
+	Courses []Course2 `json:"courses"`
+}
+
+type User2 struct {
+	UserID string `json:"userId"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+}
+
+type SearchUser struct {
+	Results []User2 `json:"results"`
 }
