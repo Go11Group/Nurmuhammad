@@ -1,0 +1,2 @@
+ALTER TABLE orders
+ADD COLUMN color VARCHAR(50);

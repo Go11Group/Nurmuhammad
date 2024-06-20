@@ -1,0 +1,1 @@
+insert into orders(name,user_id) values ('phone',1),('laptop',2),('table',3)
