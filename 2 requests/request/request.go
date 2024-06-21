@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"time"
@@ -30,10 +29,10 @@ func main() {
 	router := gin.Default()
 	Client := Client{}
 
-	router.GET("/user:id", Client.GetUser)
+	router.GET("/user/:id", Client.GetUser)
 	router.POST("/user", Client.PostUser)
-	router.PUT("/user:id", Client.PutUser)
-	router.DELETE("/user:id", Client.DeleteUser)
+	router.PUT("/user/:id", Client.PutUser)
+	router.DELETE("/user/:id", Client.DeleteUser)
 
 	router.Run(":8090")
 
@@ -49,10 +48,13 @@ func (cl *Client) GetUser(c *gin.Context) {
 	}
 
 	defer resp.Body.Close()
-	body, _ := io.ReadAll(resp.Body)
-
-	c.JSON(http.StatusOK, string(body))
-	fmt.Println(string(body))
+	var user Users
+	if err := json.NewDecoder(resp.Body).Decode(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error user encode json",
+		})
+	}
+	c.JSON(http.StatusOK, user)
 
 }
 
