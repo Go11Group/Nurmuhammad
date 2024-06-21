@@ -62,7 +62,6 @@ func (h *Handler) InsertToUser(c *gin.Context) {
 
 func (h *Handler) DeleteUser(c *gin.Context) {
 	id := c.Param("id")
-	fmt.Println(id)
 	err := h.User.DeleteUser(id)
 	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
