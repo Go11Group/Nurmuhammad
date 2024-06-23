@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS transaction,card,terminal,station,users CASCADE;
