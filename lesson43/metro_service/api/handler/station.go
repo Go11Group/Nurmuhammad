@@ -2,9 +2,10 @@ package handler
 
 import (
 	"fmt"
+	"net/http"
+
 	"github.com/Go11Group/at_lesson/lesson43/metro_service/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func (h *handler) CreateStation(ctx *gin.Context) {
@@ -28,7 +29,7 @@ func (h *handler) CreateStation(ctx *gin.Context) {
 }
 
 func (h *handler) DeleteStation(ctx *gin.Context) {
-	id := ctx.Param(":id")
+	id := ctx.Param("id")
 	err := h.Station.Delete(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
@@ -39,7 +40,7 @@ func (h *handler) DeleteStation(ctx *gin.Context) {
 }
 
 func (h *handler) UpdateStation(ctx *gin.Context) {
-	id := ctx.Param(":id")
+	id := ctx.Param("id")
 	station := models.CreateStation{}
 	if err := ctx.BindJSON(&station); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -48,7 +49,6 @@ func (h *handler) UpdateStation(ctx *gin.Context) {
 	err := h.Station.Update(id, &station)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
-		fmt.Println("error:", err.Error())
 		return
 	}
 	ctx.JSON(http.StatusCreated, "OKAY")
@@ -56,7 +56,7 @@ func (h *handler) UpdateStation(ctx *gin.Context) {
 }
 
 func (h *handler) GetByIdStation(ctx *gin.Context) {
-	id := ctx.Param(":id")
+	id := ctx.Param("id")
 
 	station, err := h.Station.GetById(id)
 	if err != nil {
@@ -64,6 +64,8 @@ func (h *handler) GetByIdStation(ctx *gin.Context) {
 		fmt.Println("error:", err.Error())
 		return
 	}
+	fmt.Print("\n\n\\n\n")
+	fmt.Println(station)
 	ctx.JSON(http.StatusCreated, station)
 }
 

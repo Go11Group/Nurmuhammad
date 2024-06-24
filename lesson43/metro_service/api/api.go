@@ -12,10 +12,10 @@ func Routes(db *sql.DB) *http.Server {
 
 	h := handler.NewHandler(db)
 
-	mux.POST("station/create", h.CreateStation)
-	mux.GET("station", h.GetAllStation)
-	mux.GET("station/:id", h.GetByIdStation)
-	mux.PUT("station/:id", h.UpdateStation)
-	mux.DELETE("station/:id", h.DeleteStation)
+	mux.POST("/station/create", h.CreateStation)
+	mux.GET("/station", h.GetAllStation)
+	mux.GET("/station/:id", h.GetByIdStation)
+	mux.PUT("/station/:id", h.UpdateStation)
+	mux.DELETE("/station/:id", h.DeleteStation)
 	return &http.Server{Handler: mux, Addr: ":8080"}
 }

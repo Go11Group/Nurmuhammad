@@ -1,15 +1,8 @@
 -- Create the tables with UUID primary keys and auto-generated UUID values
-CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    age INT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS card (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     number VARCHAR(20) NOT NULL,
-    user_id UUID NOT NULL REFERENCES users(id)
+    user_id UUID NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS transaction (

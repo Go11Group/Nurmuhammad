@@ -1,4 +1,7 @@
 DB_URL='postgres://postgres:pass@localhost:5432/new?sslmode=disable'
+DB_URL_2='postgres://postgres:pass@localhost:5432/lesson43?sslmode=disable'
+
+
 
 
 create_migrate:
@@ -20,3 +23,19 @@ mod:
 	read modulename; \
 	go mod init $$modulename
 	go mod tidy
+
+
+create_migrate_2:
+	@echo "Enter file name: "; \
+	read filename; \
+	migrate create -ext sql -dir migration -seq $$filename
+up_2:
+	migrate -database ${DB_URL_2} -path migration up
+down_2:
+	migrate -database ${DB_URL_2} -path migration down
+fix_2:
+	@echo "Enter version number: "; \
+	read num; \
+	migrate -database ${DB_URL_2} -path migration force $$num
+goto_2:
+	migrate -database ${DB_URL_2} -path migration goto 1
