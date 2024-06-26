@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "genproto/generator/";
+
+package protos;
+
+service Generator {
+    rpc FindSurname(Request) returns (Response) {}
+  }
+  
+  message Request {
+    map<string, string> all = 1;
+    string names = 2;
+  }
+  
+  message Response {
+    map<string, string> result = 1;
+  }
