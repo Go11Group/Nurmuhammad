@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net"
 	pb "new/genproto/generator"
 	"new/storage"
 	"new/storage/tables"
+	"time"
 
 	"google.golang.org/grpc"
 )
@@ -44,6 +44,7 @@ func (s *server) AddBook(ctx context.Context, req *pb.AddBookRequest) (*pb.AddBo
 	if err != nil {
 		return nil, err
 	}
+
 	return id, nil
 }
 
@@ -52,13 +53,14 @@ func (s *server) SearchBook(ctx context.Context, req *pb.SearchBookRequest) (*pb
 	if err != nil {
 		return nil, err
 	}
+	time.Sleep(2 * time.Second)
 	return books, nil
 }
 
 func (s *server) BorrowBook(ctx context.Context, req *pb.BorrowBookRequest) (*pb.BorrowBookResponse, error) {
 	err := s.b.AddBook(req)
+
 	if err != nil {
-		fmt.Println(err)
 		return &pb.BorrowBookResponse{Succes: false}, nil
 	} else {
 		return &pb.BorrowBookResponse{Succes: true}, nil
