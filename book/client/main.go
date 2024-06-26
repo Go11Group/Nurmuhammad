@@ -80,8 +80,7 @@ func BorrowBook(ctx context.Context, gen pb.GeneratorClient) {
 
 func SearchBook(ctx context.Context, gen pb.GeneratorClient) {
 	query := pb.SearchBookRequest{}
-	fmt.Print("Enter query>>> ")
-	fmt.Scan(&query.Query)
+	query.Query = "select id,name,author,year from books"
 	book, err := gen.SearchBook(ctx, &query)
 	if err != nil {
 		log.Println(err)

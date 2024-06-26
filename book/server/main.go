@@ -7,7 +7,6 @@ import (
 	pb "new/genproto/generator"
 	"new/storage"
 	"new/storage/tables"
-	"time"
 
 	"google.golang.org/grpc"
 )
@@ -53,7 +52,6 @@ func (s *server) SearchBook(ctx context.Context, req *pb.SearchBookRequest) (*pb
 	if err != nil {
 		return nil, err
 	}
-	time.Sleep(2 * time.Second)
 	return books, nil
 }
 
