@@ -26,6 +26,6 @@ func (t *TransportRepo) GetBusLocation(num *transportService.BusNumber) (*transp
 }
 
 func (t *TransportRepo) UpdateFeedback(num *transportService.ReportTrafficJamRequest) error {
-	_, err := t.Db.Exec(`update transport set feedback=$1 where number=$2`, num.Busnum, num.Feedback)
+	_, err := t.Db.Exec(`update transport set feedback=$1 where number=$2`, num.Feedback, num.Busnum)
 	return err
 }
