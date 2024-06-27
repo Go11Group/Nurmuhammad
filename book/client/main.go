@@ -18,13 +18,14 @@ func main() {
 	}
 	defer conn.Close()
 	gen := pb.NewGeneratorClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-	defer cancel()
-	Menu(ctx, gen)
+
+	Menu(gen)
 
 }
 
-func Menu(ctx context.Context, gen pb.GeneratorClient) {
+func Menu(gen pb.GeneratorClient) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 	var request int
 	fmt.Println(`
 	1 - Add Book
@@ -59,7 +60,7 @@ func AddBook(ctx context.Context, gen pb.GeneratorClient) {
 	} else {
 		fmt.Println("book created succesfully:", book2)
 	}
-	Menu(ctx, gen)
+	Menu(gen)
 }
 
 func BorrowBook(ctx context.Context, gen pb.GeneratorClient) {
@@ -74,7 +75,7 @@ func BorrowBook(ctx context.Context, gen pb.GeneratorClient) {
 	} else {
 		fmt.Println("Unsucces to borrow")
 	}
-	Menu(ctx, gen)
+	Menu(gen)
 
 }
 
@@ -88,6 +89,6 @@ func SearchBook(ctx context.Context, gen pb.GeneratorClient) {
 	for _, v := range book.Books {
 		fmt.Println(v)
 	}
-	Menu(ctx, gen)
+	Menu(gen)
 
 }
