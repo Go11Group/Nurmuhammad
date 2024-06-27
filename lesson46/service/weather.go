@@ -10,15 +10,15 @@ import (
 	"new/models"
 )
 
-type server struct {
+type serverWeather struct {
 	pb.UnimplementedWeatherServiceServer
 }
 
-func NewWeatherService() *server {
-	return &server{}
+func NewWeatherService() *serverWeather {
+	return &serverWeather{}
 }
 
-func (s *server) GetCurrentWeather(ctx context.Context, req *pb.Place) (*pb.GetCurrentWeatherResponse, error) {
+func (s *serverWeather) GetCurrentWeather(ctx context.Context, req *pb.Place) (*pb.GetCurrentWeatherResponse, error) {
 	var weatherData models.WeatherData
 
 	// Construct the API URL
@@ -45,11 +45,11 @@ func (s *server) GetCurrentWeather(ctx context.Context, req *pb.Place) (*pb.GetC
 	return &weather, nil
 }
 
-func (s *server) GetWeatherForecast(ctx context.Context, req *pb.Place) (*pb.GetWeatherForecastResponse, error) {
+func (s *serverWeather) GetWeatherForecast(ctx context.Context, req *pb.Place) (*pb.GetWeatherForecastResponse, error) {
 	var weatherData models.WeatherData
 
 	// Construct the API URL
-	apiURL := fmt.Sprintf("https://wttr.in/%s?format=j1", url.QueryEscape(req.Place))
+	apiURL := fmt.Sprintf("https://wttr.in/%s?format=j1", req.Place)
 
 	// Make the request
 	resp, err := http.Get(apiURL)
@@ -80,7 +80,7 @@ func (s *server) GetWeatherForecast(ctx context.Context, req *pb.Place) (*pb.Get
 	return &weather, nil
 }
 
-func (s *server) ReportWeatherCondition(ctx context.Context, req *pb.ReportWeatherConditionRequest) (*pb.ReportWeatherConditionResponse, error) {
+func (s *serverWeather) ReportWeatherCondition(ctx context.Context, req *pb.ReportWeatherConditionRequest) (*pb.ReportWeatherConditionResponse, error) {
 	if len(req.Feedback) > 0 {
 		return &pb.ReportWeatherConditionResponse{IsAccepted: true}, nil
 	} else {
