@@ -28,6 +28,7 @@ func main() {
 	grpc := grpc.NewServer()
 	p.RegisterTransportServiceServer(grpc, s)
 	pb.RegisterWeatherServiceServer(grpc, s1)
+	log.Println("server is running on :50052 ...")
 	err = grpc.Serve(listener)
 	if err != nil {
 		log.Fatal(err)
