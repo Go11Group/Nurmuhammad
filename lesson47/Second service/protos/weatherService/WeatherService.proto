@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+option go_package = "genproto/weatherService/";
+
+package weatherService;
+
+service WeatherService {
+    rpc GetCurrentWeather(Place) returns (GetCurrentWeatherResponse) {};
+    rpc GetWeatherForecast(Place) returns (GetWeatherForecastResponse) {};
+    rpc ReportWeatherCondition(ReportWeatherConditionRequest) returns (ReportWeatherConditionResponse) {}
+}
+
+message Place{
+    string place=1;
+}
+message GetCurrentWeatherResponse{
+    string place=1;
+    string humidity=2;
+    string tempC =3 ;
+    string windSpeedKmph=4;
+}
+
+
+message GetWeatherForecastResponse{
+    string place=1;
+    string date=2;
+    string max=3;
+    string min=4;
+    string tempC =5;
+    string windSpeedKmph=6;
+}
+
+message ReportWeatherConditionRequest{
+    string place=1;
+    string feedback=2;
+}
+
+message ReportWeatherConditionResponse{
+    bool is_accepted=1;
+}
