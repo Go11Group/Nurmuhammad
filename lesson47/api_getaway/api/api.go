@@ -16,7 +16,7 @@ func NewHandler(conn *grpc.ClientConn) *gin.Engine {
 	h := handler.NewHandler(weather, transport)
 	router.GET("/weather", h.GetWeather)
 	router.GET("/nextday/weather", h.GetNextday)
-	router.PUT("/report/wheather", h.ReportWeatherCondition)
+	router.PUT("/report/weather", h.ReportWeatherCondition)
 
 	router.GET("/bus/schedule", h.GetBus)
 	router.GET("/bus/location", h.TrackBusLocation)
