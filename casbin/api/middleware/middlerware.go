@@ -44,13 +44,11 @@ type Environment struct {
 }
 
 func Role(c *gin.Context) {
-	// Load the ABAC model and policy from files
-	e, err := casbin.NewEnforcer("model.conf", "policy.csv")
+	e, err := casbin.NewEnforcer("api/casbin/model.conf", "api/casbin/policy.csv")
 	if err != nil {
 		panic(err)
 	}
 
-	// Define test cases
 	testCases := []struct {
 		sub      Subject
 		obj      Object
@@ -64,7 +62,6 @@ func Role(c *gin.Context) {
 		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "write", false},
 	}
 
-	// Test the cases
 	for _, tc := range testCases {
 		result, err := e.Enforce(tc.sub, tc.obj, tc.act)
 		if err != nil {
