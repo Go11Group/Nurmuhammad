@@ -17,7 +17,6 @@ func main() {
 	c := api.ConnectGin(hand)
 	c.Run()
 }
-
 func NewHandler(user *dbcon.UserRepo) *handler.Handler {
 	return &handler.Handler{
 		User: user,
