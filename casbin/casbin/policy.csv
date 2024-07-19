@@ -1,0 +1,3 @@
+p, "user", "UserProfile", "read", "BusinessHours"
+p, "Admin", "AnyResource", "read", "AnyTime"
+p, "Admin", "AnyResource", "write", "AnyTime"
