@@ -9,6 +9,7 @@ func ConnectGin(handler *handler.Handler) *gin.Engine {
 
 	c := gin.Default()
 
+	c.POST("/login")
 	c.GET("/user/:id")
 	c.DELETE("/user/:id")
 
