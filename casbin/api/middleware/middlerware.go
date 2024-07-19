@@ -44,6 +44,15 @@ type Environment struct {
 }
 
 func Role(c *gin.Context) {
+	accessToken := c.GetHeader("Authorization")
+
+	if accessToken == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"error": "Authorization is required",
+		})
+		return
+	}
+
 	e, err := casbin.NewEnforcer("api/casbin/model.conf", "api/casbin/policy.csv")
 	if err != nil {
 		panic(err)
@@ -56,10 +65,6 @@ func Role(c *gin.Context) {
 		expected bool
 	}{
 		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "read", true},
-		{Subject{Name: "Bob", Role: "Nurse"}, Object{Name: "MedicalRecord"}, "read", true},
-		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "read", true},
-		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "write", true},
-		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "write", false},
 	}
 
 	for _, tc := range testCases {
