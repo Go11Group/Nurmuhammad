@@ -31,26 +31,25 @@ func main() {
 		sub      Subject
 		obj      Object
 		act      string
-		env      Environment
 		expected bool
 	}{
-		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "read", Environment{Time: "BusinessHours"}, true},
-		{Subject{Name: "Bob", Role: "Nurse"}, Object{Name: "MedicalRecord"}, "read", Environment{Time: "BusinessHours"}, true},
-		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "read", Environment{Time: "AnyTime"}, true},
-		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "write", Environment{Time: "AnyTime"}, true},
-		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "write", Environment{Time: "BusinessHours"}, false},
+		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "read", true},
+		{Subject{Name: "Bob", Role: "Nurse"}, Object{Name: "MedicalRecord"}, "read", true},
+		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "read", true},
+		{Subject{Name: "Charlie", Role: "Admin"}, Object{Name: "AnyResource"}, "write", true},
+		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "write", false},
 	}
 
 	// Test the cases
 	for _, tc := range testCases {
-		result, err := e.Enforce(tc.sub, tc.obj, tc.act, tc.env)
+		result, err := e.Enforce(tc.sub, tc.obj, tc.act)
 		if err != nil {
-			fmt.Printf("Error in enforcement: %v\\n", err)
+			fmt.Printf("Error in enforcement: %v \n", err)
 		} else {
 			if result == tc.expected {
-				fmt.Printf("PASS: %s with role %s can %s %s at %s: %v\\n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, tc.env.Time, result)
+				fmt.Printf("PASS: %s with role %s can %s at %s: %v \n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, result)
 			} else {
-				fmt.Printf("FAIL: %s with role %s can %s %s at %s: %v\\n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, tc.env.Time, result)
+				fmt.Printf("FAIL: %s with role %s can %s at %s: %v \n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, result)
 			}
 		}
 	}
