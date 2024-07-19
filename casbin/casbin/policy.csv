@@ -1,0 +1,3 @@
+p, admin, /user/*, GET
+p, admin, /user/*, DELETE
+p, user, /user/*, GET

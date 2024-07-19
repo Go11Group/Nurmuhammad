@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 	"new/api/auth"
 
@@ -9,7 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type casbinPermission struct {
+	enforcer *casbin.Enforcer
+}
+
 func Check(c *gin.Context) {
+
 	accessToken := c.GetHeader("Authorization")
 
 	if accessToken == "" {
@@ -30,56 +35,55 @@ func Check(c *gin.Context) {
 	c.Next()
 }
 
-type Subject struct {
-	Name string
-	Role string
-}
-
-type Object struct {
-	Name string
-}
-
-type Environment struct {
-	Time string
-}
-
-func Role(c *gin.Context) {
-	accessToken := c.GetHeader("Authorization")
-
-	if accessToken == "" {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"error": "Authorization is required",
-		})
-		return
+func (casb *casbinPermission) GetRole(c *gin.Context) (string, int) {
+	token := c.GetHeader("Authorization")
+	if token == "" {
+		return "unauthorized", http.StatusUnauthorized
 	}
 
-	e, err := casbin.NewEnforcer("api/casbin/model.conf", "api/casbin/policy.csv")
+	res, err := auth.GetUserIdFromAccessToken(token)
+
 	if err != nil {
-		panic(err)
+		return "error while reding role", 500
 	}
 
-	testCases := []struct {
-		sub      Subject
-		obj      Object
-		act      string
-		expected bool
-	}{
-		{Subject{Name: "Alice", Role: "Doctor"}, Object{Name: "MedicalRecord"}, "read", true},
+	return res.Role, 0
+}
+
+func (casb *casbinPermission) CheckPermission(c *gin.Context) (bool, error) {
+
+	act := c.Request.Method
+	sub, status := casb.GetRole(c)
+	if status != 0 {
+		return false, errors.New("error in get role")
+	}
+	obj := c.Request.URL
+
+	allow, err := casb.enforcer.Enforce(sub, obj.String(), act)
+	if err != nil {
+		return false, err
 	}
 
-	for _, tc := range testCases {
-		result, err := e.Enforce(tc.sub, tc.obj, tc.act)
+	return allow, nil
+}
+
+func CheckPermissionMiddleware(enf *casbin.Enforcer) gin.HandlerFunc {
+	casbHandler := &casbinPermission{
+		enforcer: enf,
+	}
+
+	return func(c *gin.Context) {
+		result, err := casbHandler.CheckPermission(c)
+
 		if err != nil {
-			fmt.Printf("Error in enforcement: %v \n", err)
-		} else {
-			if result == tc.expected {
-				fmt.Printf("PASS: %s with role %s can %s at %s: %v \n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, result)
-			} else {
-				fmt.Printf("FAIL: %s with role %s can %s at %s: %v \n", tc.sub.Name, tc.sub.Role, tc.act, tc.obj.Name, result)
-				return
-			}
+			c.AbortWithError(500, err)
 		}
-	}
+		if !result {
+			c.AbortWithStatusJSON(401, gin.H{
+				"message": "unauthorized",
+			})
+		}
 
-	c.Next()
+		c.Next()
+	}
 }

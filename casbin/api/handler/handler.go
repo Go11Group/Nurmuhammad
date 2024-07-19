@@ -1,7 +1,11 @@
 package handler
 
-import dbcon "new/storage/postgres"
+import (
+	"github.com/casbin/casbin/v2"
+	dbcon "new/storage/postgres"
+)
 
 type Handler struct {
-	User *dbcon.UserRepo
+	User     *dbcon.UserRepo
+	Enforcer *casbin.Enforcer
 }

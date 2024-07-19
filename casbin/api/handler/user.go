@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"new/api/auth"
 	"new/storage/redis"
@@ -11,6 +12,7 @@ import (
 )
 
 func (h *Handler) Login(c *gin.Context) {
+	fmt.Println("working")
 	req := structs.UserInfo{}
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error1": err.Error()})

@@ -1,3 +1,0 @@
-p, "user", "UserProfile", "read"
-p, "Admin", "UserProfile", "read"
-p, "Admin", "DeleteUser", "write"
