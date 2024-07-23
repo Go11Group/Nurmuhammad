@@ -23,6 +23,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	s := service.NewTransportService(postgres.ConnectBook(db))
 	s1 := service.NewWeatherService()
 	grpc := grpc.NewServer()

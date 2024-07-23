@@ -9,6 +9,7 @@ import (
 
 func main() {
 	conn, err := grpc.NewClient(":50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
 	if err != nil {
 		panic(err)
 	}
